@@ -9,7 +9,7 @@ from datetime import timezone
 import time
 import cv2
 
-
+#ss
 
 class AddSubjectWindow(QtWidgets.QWidget):
     def __init__(self):
