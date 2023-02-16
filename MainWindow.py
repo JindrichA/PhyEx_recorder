@@ -1,33 +1,15 @@
-
-import sys
-import random
 from PySide6 import QtCore, QtWidgets, QtGui
 import ffmpeg
 import datetime
 from datetime import datetime, timedelta
 from datetime import timezone
-import time
+
 import cv2
 
+import ConfirmationWindow
+import config
 import AddSubjectWindow
 
-import mysql.connector
-mydb = mysql.connector.connect(
-  host="127.0.0.1",
-  user="root",
-  password="root",
-  database="testovaci_databaze"
-)
-mycursor2 = mydb.cursor()
-mycursor2.execute("SELECT Jmeno FROM prvni_tabulka")
-myresult = mycursor2.fetchall()
-lastnames = []
-for row in myresult:
-    for field in row:
-        lastnames.append(field)
-
-print(type(myresult))
-seznam_subjektu = set(lastnames)
 
 
 
@@ -38,16 +20,16 @@ class MainWindow(QtWidgets.QWidget):
         # Inicializace
         self.setWindowTitle("PhyEx Recorder 0.2 Jindrich 02/2023")
         self.button = QtWidgets.QPushButton("Start recording")
-        self.button2 = QtWidgets.QPushButton("Stop")
-        self.button3 = QtWidgets.QPushButton("Add new subject")
-        self.button4 = QtWidgets.QPushButton("Vybrat subjekt")
+        self.button_stop = QtWidgets.QPushButton("Stop")
+        self.button_add_subject = QtWidgets.QPushButton("Add new subject")
+        self.button_update_databse = QtWidgets.QPushButton("Update database")
         self.checkbox_button = QtWidgets.QCheckBox("Kamera 1")
         self.checkbox_button2 = QtWidgets.QCheckBox("Kamera 2")
         self.checkbox_button3 = QtWidgets.QCheckBox("Kamera 3")
         self.checkbox_button4 = QtWidgets.QCheckBox("Kamera 4")
         self.text = QtWidgets.QLabel("Vyberte si cvičení a kamery",
                                      alignment=QtCore.Qt.AlignCenter)
-        self.listWidget2 = QtWidgets.QListWidget()
+        self.list_of_subjects = QtWidgets.QListWidget()
         self.listWidget = QtWidgets.QListWidget()
 
         self.layout = QtWidgets.QVBoxLayout(self)
@@ -55,25 +37,27 @@ class MainWindow(QtWidgets.QWidget):
 
         self.layout.addWidget(self.text)
         self.layout.addWidget(self.button)
-        self.layout.addWidget(self.button2)
-        self.layout.addWidget(self.button3)
-    #    self.layout.addWidget(self.button4)
+        self.layout.addWidget(self.button_stop)
+        self.layout.addWidget(self.button_add_subject)
+        
         self.layout.addWidget(self.checkbox_button)
         self.layout.addWidget(self.checkbox_button2)
         self.layout.addWidget(self.checkbox_button3)
         self.layout.addWidget(self.checkbox_button4)
         self.layout.addWidget(self.listWidget)
-        self.layout.addWidget(self.listWidget2)
+        self.layout.addWidget(self.button_update_databse)
+        self.layout.addWidget(self.list_of_subjects)
 
         # Vlastnosti
         self.listWidget.addItems(["SZU", "TEST", "JIN"])
         self.button.clicked.connect(self.run)
-        self.button2.clicked.connect(self.stop)
-        self.button3.clicked.connect(self.show_new_window)
-       # self.button4.clicked.connect(self.select_subject)
-        self.listWidget2.addItems(seznam_subjektu)
+        self.button_stop.clicked.connect(self.stop)
+        self.button_add_subject.clicked.connect(self.show_new_window)
+        self.button_update_databse.clicked.connect(self.actualizite_text)
+        self.list_of_subjects.addItems(config.seznam_subjektu)
         self.listWidget.itemClicked.connect(self.itemActivated_event)
-        self.listWidget2.itemClicked.connect(self.itemActivated_event2)
+        self.list_of_subjects.itemClicked.connect(self.itemActivated_event2)
+        #self.list_of_subjects.itemClicked.connect(self.actualizite_text)
         self.ID_of_the_participant = "0"
         self.path_to_save_videos = "C:/Users/adolfjin/Videos/"
         self.name_of_the_exercise = "Not_selected"
@@ -90,15 +74,21 @@ class MainWindow(QtWidgets.QWidget):
     @QtCore.Slot()
     def actualizite_text(self):
 
-        self.listWidget2.clear()
-        self.listWidget2.addItems(seznam_subjektu)
+        self.list_of_subjects.clear()
+        self.list_of_subjects.addItems(config.seznam_subjektu)
 
 
     def show_new_window(self):
         self.w = AddSubjectWindow.AddSubjectWindow()
         self.w.show()
         self.w.resize(800, 400)
-        self.w.button.clicked.connect(widget.actualizite_text)
+     #   self.w.button.clicked.connect(widget.actualizite_text)
+    def show_confirmation_window(self):
+        self.cw = ConfirmationWindow.ConfirmationWindow()
+        self.cw.show()
+        self.cw.resize(800, 400)
+
+
 
     def select_subject(self):
         print("subject selected")
@@ -194,3 +184,4 @@ class MainWindow(QtWidgets.QWidget):
 
         self.text.setText("OK videos had been recorded with total of {} frames.".format(self.total_fps))
         self.text.setStyleSheet("color: green")
+        self.show_confirmation_window()

@@ -1,14 +1,15 @@
 
-import sys
-import random
-from PySide6 import QtCore, QtWidgets, QtGui
-import ffmpeg
-import datetime
-from datetime import datetime, timedelta
-from datetime import timezone
-import time
-import cv2
 
+from PySide6 import QtCore, QtWidgets, QtGui
+import time
+import config
+import mysql.connector
+mydb = mysql.connector.connect(
+  host="127.0.0.1",
+  user="root",
+  password="root",
+  database="testovaci_databaze"
+)
 #ss
 
 class AddSubjectWindow(QtWidgets.QWidget):
@@ -58,7 +59,7 @@ class AddSubjectWindow(QtWidgets.QWidget):
         self.weight_comboBox.addItems(["Under 40", "40-49", "50-59", "60-69", "70-79", "80-89", "90-99", "100-110", "over 110"])
     def run(self):
 
-        if self.edit_nickname.text() not in seznam_subjektu and self.checkbox_agree.isChecked():
+        if self.edit_nickname.text() not in config.seznam_subjektu and self.checkbox_agree.isChecked():
             mycursor = mydb.cursor()
             #sql = "INSERT INTO prvni_tabulka (Jmeno,Vek, Prijmeni) VALUES (%s,%s, %s)"
             #val = (self.edit.text(), int(self.weight_comboBox.text()), self.edit2.text())
@@ -67,9 +68,10 @@ class AddSubjectWindow(QtWidgets.QWidget):
 
             mycursor.execute(sql, val)
             mydb.commit()
-            seznam_subjektu.add(self.edit_nickname.text())
+            config.seznam_subjektu.add(self.edit_nickname.text())
             self.info_text.setText("Sucessfully saved to databse")
             self.info_text.setStyleSheet("color: green")
+            self.close()
         else:
             self.info_text.setText("Was not saved to database!, Consent not provided or dublicite Nickname")
             self.info_text.setStyleSheet("color: red")
