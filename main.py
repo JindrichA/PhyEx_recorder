@@ -6,7 +6,6 @@ import MainWindow
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication([])
-    global widget
     widget = MainWindow.MainWindow()
     widget.resize(800, 600)
     widget.show()
