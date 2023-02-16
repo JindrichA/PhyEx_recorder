@@ -1,4 +1,4 @@
-<p style="font-size:30px">PhyEx Recorder.</p>
+PhyEx Recorder
 
 Created by Jindrich Adolf 16.2.2023
 
