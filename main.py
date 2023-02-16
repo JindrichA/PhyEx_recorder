@@ -1,16 +1,7 @@
 import sys
-import random
 from PySide6 import QtCore, QtWidgets, QtGui
-import ffmpeg
-import datetime
-from datetime import datetime, timedelta
-from datetime import timezone
-import time
-import cv2
-
 
 import MainWindow
-
 
 
 if __name__ == "__main__":
