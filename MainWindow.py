@@ -67,6 +67,8 @@ class MainWindow(QtWidgets.QWidget):
     def itemActivated_event(self, item):
         self.name_of_the_exercise = (item.text())
 
+
+
     @QtCore.Slot()
     def itemActivated_event2(self, item):
         self.ID_of_the_participant = (item.text())
@@ -88,7 +90,10 @@ class MainWindow(QtWidgets.QWidget):
         self.cw.show()
         self.cw.resize(800, 400)
 
-
+    def testDevice(self, source):
+        self.cap = cv2.VideoCapture(source)
+        if self.cap is None or not self.cap.isOpened():
+            print('Warning: unable to open video source: ', source)
 
     def select_subject(self):
         print("subject selected")
@@ -105,12 +110,16 @@ class MainWindow(QtWidgets.QWidget):
 
 
         if self.checkbox_button.isChecked():
+            cam1_filname = "rtsp://admin:kamera_fyzio_0" + str(2) + "@192.168.1.11" + str(1) + ":554/cam/realmonitor?channel=1&subtype=0"
             self.process_X = (
                 ffmpeg
-                .input(filename="rtsp://admin:kamera_fyzio_0"+str(1)+"@192.168.1.11"+str(1)+":554/cam/realmonitor?channel=1&subtype=0")
+                .input(filename=cam1_filname)
                 .output(filename=self.path_to_save_videos+self.name_of_the_exercise+"_"+self.name_of_video+"_ID_"+self.ID_of_the_participant+"_cam_"+str(1)+".mp4", c="copy")
                 .overwrite_output()
             )
+
+
+
             self.process1 = self.process_X.run_async(pipe_stdin=True)
 
         if self.checkbox_button2.isChecked():
@@ -120,16 +129,21 @@ class MainWindow(QtWidgets.QWidget):
                 .output(filename=self.path_to_save_videos+self.name_of_the_exercise+"_"+self.name_of_video+"_ID_"+self.ID_of_the_participant+"_cam_"+str(2)+".mp4", c="copy")
                 .overwrite_output()
             )
+
             self.process2 = self.process_X2.run_async(pipe_stdin=True)
 
         if self.checkbox_button3.isChecked():
+
+            cam3_filname = "rtsp://admin:kamera_fyzio_0" + str(3) + "@192.168.1.11" + str(3) + ":554/cam/realmonitor?channel=1&subtype=0"
+            #self.testDevice(cam3_filname)
             self. process_X3 = (
                 ffmpeg
-                .input(filename="rtsp://admin:kamera_fyzio_0"+str(3)+"@192.168.1.11"+str(3)+":554/cam/realmonitor?channel=1&subtype=0")
+                .input(filename=cam3_filname)
                 .output(filename=self.path_to_save_videos+self.name_of_the_exercise+"_"+self.name_of_video+"_ID_"+self.ID_of_the_participant+"_cam_"+str(3)+".mp4", c="copy")
                 .overwrite_output()
             )
-            self.process3 = self.process_X3.run_async(pipe_stdin=True)
+
+        self.process3 = self.process_X3.run_async(pipe_stdin=True)
 
         if self.checkbox_button4.isChecked():
             self. process_X4 = (
@@ -181,6 +195,7 @@ class MainWindow(QtWidgets.QWidget):
             #time.sleep(1)
             del self.process4
             video_4 = cv2.VideoCapture(self.path_to_save_videos+self.name_of_the_exercise+"_"+self.name_of_video+"_ID_"+self.ID_of_the_participant+"_cam_"+str(4)+".mp4")
+            config.names_of_video_files.append(self.name_of_video + "_ID_" + self.ID_of_the_participant + "_cam_" + str(4) + ".mp4")
             self.total_fps.append(int(video_4.get(cv2.CAP_PROP_FRAME_COUNT)))
             video_4.release()
 
