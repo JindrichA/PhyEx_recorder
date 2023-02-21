@@ -22,7 +22,7 @@ class MainWindow(QtWidgets.QWidget):
         self.button = QtWidgets.QPushButton("Start recording")
         self.button_stop = QtWidgets.QPushButton("Stop")
         self.button_add_subject = QtWidgets.QPushButton("Add new subject")
-        self.button_update_databse = QtWidgets.QPushButton("Update database")
+        self.button_update_database = QtWidgets.QPushButton("Update database")
         self.checkbox_button = QtWidgets.QCheckBox("Kamera 1")
         self.checkbox_button2 = QtWidgets.QCheckBox("Kamera 2")
         self.checkbox_button3 = QtWidgets.QCheckBox("Kamera 3")
@@ -45,7 +45,7 @@ class MainWindow(QtWidgets.QWidget):
         self.layout.addWidget(self.checkbox_button3)
         self.layout.addWidget(self.checkbox_button4)
         self.layout.addWidget(self.listWidget)
-        self.layout.addWidget(self.button_update_databse)
+        self.layout.addWidget(self.button_update_database)
         self.layout.addWidget(self.list_of_subjects)
 
         # Vlastnosti
@@ -53,7 +53,7 @@ class MainWindow(QtWidgets.QWidget):
         self.button.clicked.connect(self.run)
         self.button_stop.clicked.connect(self.stop)
         self.button_add_subject.clicked.connect(self.show_new_window)
-        self.button_update_databse.clicked.connect(self.actualizite_text)
+        self.button_update_database.clicked.connect(self.actualizite_text)
         self.list_of_subjects.addItems(config.seznam_subjektu)
         self.listWidget.itemClicked.connect(self.itemActivated_event)
         self.list_of_subjects.itemClicked.connect(self.itemActivated_event2)
