@@ -3,7 +3,6 @@ import ffmpeg
 import datetime
 from datetime import datetime, timedelta
 from datetime import timezone
-
 import cv2
 
 import ConfirmationWindow
@@ -33,8 +32,6 @@ class MainWindow(QtWidgets.QWidget):
         self.listWidget = QtWidgets.QListWidget()
 
         self.layout = QtWidgets.QVBoxLayout(self)
-
-
         self.layout.addWidget(self.text)
         self.layout.addWidget(self.button)
         self.layout.addWidget(self.button_stop)
