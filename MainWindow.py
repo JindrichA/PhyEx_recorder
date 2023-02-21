@@ -23,7 +23,7 @@ class MainWindow(QtWidgets.QWidget):
         self.button_stop = QtWidgets.QPushButton("Stop")
         self.button_add_subject = QtWidgets.QPushButton("Add new subject")
         self.button_update_database = QtWidgets.QPushButton("Update database")
-        self.checkbox_button = QtWidgets.QCheckBox("Kamera 1")
+        self.checkbox_button = QtWidgets.QCheckBox("Camera 1")
         self.checkbox_button2 = QtWidgets.QCheckBox("Kamera 2")
         self.checkbox_button3 = QtWidgets.QCheckBox("Kamera 3")
         self.checkbox_button4 = QtWidgets.QCheckBox("Kamera 4")
