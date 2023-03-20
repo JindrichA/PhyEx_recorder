@@ -19,3 +19,4 @@ seznam_subjektu = set(lastnames)
 names_of_video_files = []
 
 weight_list = ["Under 40", "40-49", "50-59", "60-69", "70-79", "80-89", "90-99", "100-110", "over 110"]
+seznam_cviku = ["SZU", "TEST", "JIN", "FTVS_A", "FTVS_J"]
