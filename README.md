@@ -1,4 +1,6 @@
 # PhyEx Recorder PyQT-Based Python Program for Synchronized Camera Recording
+Created by Jindrich 27.3.2023
+
 This program is a Python-based application that enables synchronized recording from four different cameras. It uses the ffmpeg library to handle the synchronization of video feeds from the cameras. The program also features a user-friendly GUI that enables the user to select an exercise and add user data to a database.
 
 ## Getting Started
