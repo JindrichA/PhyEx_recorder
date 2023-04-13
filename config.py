@@ -28,3 +28,9 @@ seznam_subjektu = set(lastnames)
 
 names_of_video_files = []
 
+
+cam_1 = "rtsp://admin:kamera_fyzio_0" + str(1) + "@192.168.1.11" + str(1) + ":554/cam/realmonitor?channel=1&subtype=0"
+cam_2 = "rtsp://admin:kamera_fyzio_0" + str(2) + "@192.168.1.12" + str(2) + ":554/cam/realmonitor?channel=1&subtype=0"
+cam_3 = "rtsp://admin:kamera_fyzio_0" + str(3) + "@192.168.1.13" + str(3) + ":554/cam/realmonitor?channel=1&subtype=0"
+cam_4 = "rtsp://admin:kamera_fyzio_0" + str(4) + "@192.168.1.14" + str(4) + ":554/cam/realmonitor?channel=1&subtype=0"
+
