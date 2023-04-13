@@ -53,10 +53,11 @@ class AddSubjectWindow(QtWidgets.QWidget):
 
         # Vlastnosti
         self.button.clicked.connect(self.run)
-        self.multiplechoice.addItems(["YES - including face", "Limited - with anonymize face", "Only for research"])
-        self.gender_comboBox.addItems(["Man", "Woman", "Don't want to say"])
-        self.age_comboBox.addItems(["Under 18", "18-25", "26-33", "34-41", "42-49", "50-57", "58-65", "over 65"])
+        self.multiplechoice.addItems(config.sharing_option)
+        self.gender_comboBox.addItems(config.gender)
+        self.age_comboBox.addItems(config.age_range)
         self.weight_comboBox.addItems(config.weight_list)
+
     def run(self):
 
         if self.edit_nickname.text() not in config.seznam_subjektu and self.checkbox_agree.isChecked():
