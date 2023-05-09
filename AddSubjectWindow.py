@@ -40,7 +40,7 @@ class AddSubjectWindow(QtWidgets.QWidget):
         self.text_sport_hours_per_week = QtWidgets.QLabel("How many hours per week do you spend by intensive sport activity, etc. running, cycling, ...?")
 
         self.text_age = QtWidgets.QLabel("Add your age?")
-        self.text_weight = QtWidgets.QLabel("Add your weight?")
+        self.text_weight = QtWidgets.QLabel("Add your weight? [kg]")
         self.text_gender = QtWidgets.QLabel("What is your gender?")
         self.video_rights_text = QtWidgets.QLabel("Video rights, what can we do with the video?")
 
@@ -103,6 +103,7 @@ class AddSubjectWindow(QtWidgets.QWidget):
             #val = ("John", self.edit_nickname.text(), 1990, "Male", "Developer", "6 hours", "30 hours", "Twice a day", 70, 170)
             age = 20
             sport_hours_per_week = 10
+
             val = (self.gender_comboBox.currentText(), self.edit_occupation.text(), self.sitting_per_day_comboBox.currentText(),
                    self.active_hours_per_week_comboBox.currentText(), self.stretching_frequency_comboBox.currentText(), self.weight_comboBox.currentText(),
                    170, self.edit_nickname.text(), self.age_comboBox.currentText(), self.sport_hours_per_week_comboBox.currentText())

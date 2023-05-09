@@ -33,6 +33,7 @@ lastnames = []
 ides = []
 
 current_ID = 0
+current_Nickname = "None"
 
 
 for row in myresult:

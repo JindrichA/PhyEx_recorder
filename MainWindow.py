@@ -12,12 +12,15 @@ import config
 import os
 import platform
 import subprocess
+from data_store import DataStore
+data_store = DataStore()
 
 
 class MainWindow(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
         # Inicializace
+        self.data_store = data_store
         self.setWindowTitle("PhyEx Recorder 0.4 Jindrich 05/2023")
         self.button = QtWidgets.QPushButton("Start recording")
         self.button_stop = QtWidgets.QPushButton("Stop")
@@ -141,7 +144,7 @@ class MainWindow(QtWidgets.QWidget):
         self.utc_timestamp = int(self.utc_time.timestamp())
         self.utc_timestamp = str(self.utc_timestamp)
         self.kam_number = 1
-
+        self.data_store.shared_variable = self.list_of_subjects.currentItem().text()
         # Tady přidat, možnost ověření, že ta kamera je připojená, aby to případně vyhodilo hlášku že to nejde
 
 
