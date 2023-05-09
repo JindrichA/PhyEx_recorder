@@ -4,20 +4,21 @@ import datetime
 from datetime import datetime, timedelta
 from datetime import timezone
 import cv2
-
+import numpy as np
 import ConfirmationWindow
 import config
 import AddSubjectWindow
-
-
+import config
+import os
+import platform
+import subprocess
 
 
 class MainWindow(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
-
         # Inicializace
-        self.setWindowTitle("PhyEx Recorder 0.2 Jindrich 03/2023")
+        self.setWindowTitle("PhyEx Recorder 0.4 Jindrich 05/2023")
         self.button = QtWidgets.QPushButton("Start recording")
         self.button_stop = QtWidgets.QPushButton("Stop")
         self.button_add_subject = QtWidgets.QPushButton("Add new subject")
@@ -25,28 +26,48 @@ class MainWindow(QtWidgets.QWidget):
         self.checkbox_button = QtWidgets.QCheckBox("Cam 1")
         self.checkbox_button2 = QtWidgets.QCheckBox("Cam 2")
         self.checkbox_button3 = QtWidgets.QCheckBox("Cam 3")
-        self.checkbox_button4 = QtWidgets.QCheckBox("Kamera 4")
-        self.text = QtWidgets.QLabel("Vyberte si cvičení a kamery",
+        self.checkbox_button4 = QtWidgets.QCheckBox("Cam 4")
+        self.checkbox_button5 = QtWidgets.QCheckBox("Cam 5")
+        self.checkbox_button6 = QtWidgets.QCheckBox("Cam 6")
+        self.text = QtWidgets.QLabel("Select exercise and cameras",
                                      alignment=QtCore.Qt.AlignCenter)
         self.list_of_subjects = QtWidgets.QListWidget()
         self.listWidget = QtWidgets.QListWidget()
 
         self.layout = QtWidgets.QVBoxLayout(self)
+
+        # Add the other widgets
         self.layout.addWidget(self.text)
         self.layout.addWidget(self.button)
         self.layout.addWidget(self.button_stop)
+
+        # Create two horizontal layouts for the two columns
+        left_column_layout = QtWidgets.QHBoxLayout()
+        right_column_layout = QtWidgets.QHBoxLayout()
+
+        # Add checkboxes to each column layout
+        left_column_layout.addWidget(self.checkbox_button)
+        left_column_layout.addWidget(self.checkbox_button2)
+        left_column_layout.addWidget(self.checkbox_button3)
+        right_column_layout.addWidget(self.checkbox_button4)
+        right_column_layout.addWidget(self.checkbox_button5)
+        right_column_layout.addWidget(self.checkbox_button6)
+
+        # Add the two column layouts to the parent vertical layout
+        self.layout.addLayout(left_column_layout)
+        self.layout.addLayout(right_column_layout)
+
+        # Continue adding the other widgets
         self.layout.addWidget(self.button_add_subject)
-        
-        self.layout.addWidget(self.checkbox_button)
-        self.layout.addWidget(self.checkbox_button2)
-        self.layout.addWidget(self.checkbox_button3)
-        self.layout.addWidget(self.checkbox_button4)
         self.layout.addWidget(self.listWidget)
         self.layout.addWidget(self.button_update_database)
         self.layout.addWidget(self.list_of_subjects)
 
+        # Add a spacer to push the remaining widgets down
+        self.layout.addStretch(1)
+
         # Vlastnosti
-        self.listWidget.addItems(config.seznam_cviku)
+        self.listWidget.addItems(config.TYPE_OF_EXERCISE_LIST)
         self.button.clicked.connect(self.run)
         self.button_stop.clicked.connect(self.stop)
         self.button_add_subject.clicked.connect(self.show_new_window)
@@ -56,8 +77,26 @@ class MainWindow(QtWidgets.QWidget):
         self.list_of_subjects.itemClicked.connect(self.itemActivated_event2)
         #self.list_of_subjects.itemClicked.connect(self.actualizite_text)
         self.ID_of_the_participant = "0"
-        self.path_to_save_videos = "C:/Users/adolfjin/Videos/"
+        self.path_to_save_videos = config.PATH_TO_RECORDED_VIDEOS
         self.name_of_the_exercise = "Not_selected"
+
+    def open_folder_in_explorer(self, folder_path):
+        if not os.path.exists(folder_path):
+            raise ValueError(f"Path '{folder_path}' does not exist.")
+
+        if platform.system() == "Windows":
+            subprocess.run(["explorer", os.path.abspath(folder_path)])
+        elif platform.system() == "Darwin":
+            subprocess.run(["open", os.path.abspath(folder_path)])
+        elif platform.system() == "Linux":
+            subprocess.run(["xdg-open", os.path.abspath(folder_path)])
+        else:
+            raise ValueError("Unsupported platform: " + platform.system())
+
+    # Replace this with the path of the folder you want to open
+
+
+
 
 
     @QtCore.Slot()
@@ -107,10 +146,9 @@ class MainWindow(QtWidgets.QWidget):
 
 
         if self.checkbox_button.isChecked():
-            cam1_filname = "rtsp://admin:kamera_fyzio_0" + str(1) + "@192.168.1.11" + str(1) + ":554/cam/realmonitor?channel=1&subtype=0"
             self.process_X = (
                 ffmpeg
-                .input(filename=cam1_filname)
+                .input(filename=config.cam_1)
                 .output(filename=self.path_to_save_videos+self.name_of_the_exercise+"_"+self.utc_timestamp+"_ID_"+self.ID_of_the_participant+"_cam_"+str(1)+".mp4", c="copy")
                 .overwrite_output()
             )
@@ -118,11 +156,10 @@ class MainWindow(QtWidgets.QWidget):
 
 
             self.process1 = self.process_X.run_async(pipe_stdin=True)
-
         if self.checkbox_button2.isChecked():
             self. process_X2 = (
                 ffmpeg
-                .input(filename="rtsp://admin:kamera_fyzio_0"+str(2)+"@192.168.1.11"+str(2)+":554/cam/realmonitor?channel=1&subtype=0")
+                .input(filename=config.cam_2)
                 .output(filename=self.path_to_save_videos+self.name_of_the_exercise+"_"+self.utc_timestamp+"_ID_"+self.ID_of_the_participant+"_cam_"+str(2)+".mp4", c="copy")
                 .overwrite_output()
             )
@@ -130,26 +167,42 @@ class MainWindow(QtWidgets.QWidget):
             self.process2 = self.process_X2.run_async(pipe_stdin=True)
 
         if self.checkbox_button3.isChecked():
-
-            cam3_filname = "rtsp://admin:kamera_fyzio_0" + str(3) + "@192.168.1.11" + str(3) + ":554/cam/realmonitor?channel=1&subtype=0"
-            #self.testDevice(cam3_filname)
             self. process_X3 = (
                 ffmpeg
-                .input(filename=cam3_filname)
+                .input(filename=config.cam_3)
                 .output(filename=self.path_to_save_videos+self.name_of_the_exercise+"_"+self.utc_timestamp+"_ID_"+self.ID_of_the_participant+"_cam_"+str(3)+".mp4", c="copy")
                 .overwrite_output()
             )
 
-        self.process3 = self.process_X3.run_async(pipe_stdin=True)
+            self.process3 = self.process_X3.run_async(pipe_stdin=True)
 
         if self.checkbox_button4.isChecked():
             self. process_X4 = (
                 ffmpeg
-                .input(filename="rtsp://admin:kamera_fyzio_0"+str(4)+"@192.168.1.11"+str(4)+":554/cam/realmonitor?channel=1&subtype=0")
+                .input(filename=config.cam_4)
                 .output(filename=self.path_to_save_videos+self.name_of_the_exercise+"_"+self.utc_timestamp+"_ID_"+self.ID_of_the_participant+"_cam_"+str(4)+".mp4", c="copy")
                 .overwrite_output()
             )
             self.process4 = self.process_X4.run_async(pipe_stdin=True)
+
+        if self.checkbox_button5.isChecked():
+            self. process_X5 = (
+                ffmpeg
+                .input(filename=config.cam_5)
+                .output(filename=self.path_to_save_videos+self.name_of_the_exercise+"_"+self.utc_timestamp+"_ID_"+self.ID_of_the_participant+"_cam_"+str(5)+".mp4", c="copy")
+                .overwrite_output()
+            )
+            self.process5 = self.process_X5.run_async(pipe_stdin=True)
+
+        if self.checkbox_button6.isChecked():
+            self. process_X6 = (
+                ffmpeg
+                .input(filename=config.cam_6)
+                .output(filename=self.path_to_save_videos+self.name_of_the_exercise+"_"+self.utc_timestamp+"_ID_"+self.ID_of_the_participant+"_cam_"+str(6)+".mp4", c="copy")
+                .overwrite_output()
+            )
+            self.process6 = self.process_X6.run_async(pipe_stdin=True)
+
 
 
         self.text.setText("Video is recording: "+self.name_of_the_exercise)
@@ -197,6 +250,25 @@ class MainWindow(QtWidgets.QWidget):
             self.frame_count.append(int(video_4.get(cv2.CAP_PROP_FRAME_COUNT)))
             video_4.release()
 
+        if self.checkbox_button5.isChecked():
+            self.process5.communicate(str.encode("q"))
+            #time.sleep(1)
+            del self.process5
+            video_5 = cv2.VideoCapture(self.path_to_save_videos+self.name_of_the_exercise+"_"+self.utc_timestamp+"_ID_"+self.ID_of_the_participant+"_cam_"+str(5)+".mp4")
+            config.names_of_video_files.append(self.name_of_the_exercise+"_"+self.utc_timestamp + "_ID_" + self.ID_of_the_participant + "_cam_" + str(5) + ".mp4")
+            self.frame_count.append(int(video_5.get(cv2.CAP_PROP_FRAME_COUNT)))
+            video_5.release()
+
+        if self.checkbox_button6.isChecked():
+            self.process6.communicate(str.encode("q"))
+            #time.sleep(1)
+            del self.process6
+            video_6 = cv2.VideoCapture(self.path_to_save_videos+self.name_of_the_exercise+"_"+self.utc_timestamp+"_ID_"+self.ID_of_the_participant+"_cam_"+str(6)+".mp4")
+            config.names_of_video_files.append(self.name_of_the_exercise+"_"+self.utc_timestamp + "_ID_" + self.ID_of_the_participant + "_cam_" + str(6) + ".mp4")
+            self.frame_count.append(int(video_6.get(cv2.CAP_PROP_FRAME_COUNT)))
+            video_6.release()
+
         self.text.setText("OK videos had been recorded with total of {} frames.".format(self.frame_count))
         self.text.setStyleSheet("color: green")
         self.show_confirmation_window()
+        self.open_folder_in_explorer(config.PATH_TO_RECORDED_VIDEOS)

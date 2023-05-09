@@ -2,7 +2,8 @@ import cv2
 import config
 # Initialize the camera capture
 #cap = cv2.VideoCapture(0)
-cap = cv2.VideoCapture(config.cam_1)
+cemear_selected = config.cam_4
+cap = cv2.VideoCapture(cemear_selected)
 
 
 # Loop to continuously read frames from the camera

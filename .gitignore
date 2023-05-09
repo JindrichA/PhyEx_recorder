@@ -1,0 +1,14 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyc.pytest_cache/
+*.cache
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Sensitive information, like API keys or passwords
+secrets_jindrich.py

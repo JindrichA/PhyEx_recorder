@@ -1,17 +1,21 @@
 from PySide6 import QtCore, QtWidgets, QtGui
-
 import config
-
 import mysql.connector
+from secrets_jindrich import DB_HOST, DB_USER, DB_PASSWORD, DB_NAME
+
 
 mydb = mysql.connector.connect(
-  host="127.0.0.1",
-  user="root",
-  password="root",
-  database="testovaci_databaze"
+  host=DB_HOST,
+  user=DB_USER,
+  password=DB_PASSWORD,
+  database=DB_NAME
 )
 
 class ConfirmationWindow(QtWidgets.QWidget):
+
+
+
+
     def __init__(self):
         super().__init__()
         # inicializace
@@ -46,9 +50,9 @@ class ConfirmationWindow(QtWidgets.QWidget):
         # val = (self.edit.text(), int(self.weight_comboBox.text()), self.edit2.text())
         list_to_str = ' '.join([str(elem) for elem in config.names_of_video_files])
         comment_from_edit = self.edit_comment.text() 
-        sql = "INSERT INTO file_names_and_comments (file_name, comment) VALUES (%s, %s)"
+        sql = "INSERT INTO exercise_comment (comment, exercise_ID) VALUES (%s, %s)"
 
-        val = (list_to_str, comment_from_edit)
+        val = (comment_from_edit )
         mycursor3.execute(sql, val)
         mydb.commit()
 
