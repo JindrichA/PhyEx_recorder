@@ -32,7 +32,7 @@ class AddSubjectWindow(QtWidgets.QWidget):
         self.stretching_frequency_comboBox = QtWidgets.QComboBox()
         self.button = QtWidgets.QPushButton("Add_subject")
         self.info_text = QtWidgets.QLabel("Tool to add inform consent")
-        self.text_nickname = QtWidgets.QLabel("Add some funny nickname as ID for example: 'Pepa'")
+        self.text_nickname = QtWidgets.QLabel("Add some funny nickname as ID for example: 'Spiderman'")
         self.text_occupation = QtWidgets.QLabel("What is your occupation? (student, worker, retired, ...)")
         self.text_sitting_per_day = QtWidgets.QLabel("How many hours do you sit per day?")
         self.text_strethig_frequency = QtWidgets.QLabel("How often do you stretch?")
