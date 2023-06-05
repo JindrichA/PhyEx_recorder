@@ -3,13 +3,21 @@ from secrets_jindrich import DB_HOST, DB_USER, DB_PASSWORD, DB_NAME
 
 
 
+try:
+    mydb = mysql.connector.connect(
+      host=DB_HOST,
+      user=DB_USER,
+      password=DB_PASSWORD,
+      database=DB_NAME
+    )
+    mycursor2 = mydb.cursor()
+    mycursor2.execute("SELECT id, Nickname FROM figurant")
+    myresult = mycursor2.fetchall()
 
-mydb = mysql.connector.connect(
-  host=DB_HOST,
-  user=DB_USER,
-  password=DB_PASSWORD,
-  database=DB_NAME
-)
+
+except:
+    print("Cannot connect to the database")
+    myresult = ["No connection to the database"]
 
 PATH_TO_RECORDED_VIDEOS = "C:/Users/adolfjin/videos_ip_cam/"
 
@@ -26,9 +34,9 @@ HOURS_SITTING_PER_DAY_LIST = ["Under 2 hours", "2-4 hours", "4-6 hours", "6-8 ho
 ACTIVE_HOURS_PER_WEEK_LIST = ["Under 2 hours", "2-4 hours", "4-6 hours", "6-8 hours", "8-10 hours", "10-12 hours", "12-14 hours", "14-16 hours", "16-18 hours", "18-20 hours", "over 20 hours"]
 INTENSIVE_SPORT_HOURS_PER_WEEK_LIST = ["Under 2 hours", "2-4 hours", "4-6 hours", "6-8 hours", "8-10 hours", "10-12 hours", "12-14 hours", "14-16 hours", "16-18 hours", "18-20 hours", "over 20 hours"]
 STRETCHING_FREQUENCY_LIST = ["Never", "Once a week", "Twice a week", "Three times a week", "Four times a week", "Five times a week", "Six times a week", "Seven times a week"]
-mycursor2 = mydb.cursor()
-mycursor2.execute("SELECT id, Nickname FROM figurant")
-myresult = mycursor2.fetchall()
+
+
+
 lastnames = []
 ides = []
 

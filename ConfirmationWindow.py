@@ -5,13 +5,15 @@ from secrets_jindrich import DB_HOST, DB_USER, DB_PASSWORD, DB_NAME
 import MainWindow
 import re
 
-mydb = mysql.connector.connect(
-  host=DB_HOST,
-  user=DB_USER,
-  password=DB_PASSWORD,
-  database=DB_NAME
-)
-
+try:
+    mydb = mysql.connector.connect(
+      host=DB_HOST,
+      user=DB_USER,
+      password=DB_PASSWORD,
+      database=DB_NAME
+    )
+except:
+    print("Cannot connect to the database")
 class ConfirmationWindow(QtWidgets.QWidget):
 
 

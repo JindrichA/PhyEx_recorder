@@ -8,14 +8,15 @@ from secrets_jindrich import DB_HOST, DB_USER, DB_PASSWORD, DB_NAME
 
 
 
-
-mydb = mysql.connector.connect(
-  host=DB_HOST,
-  user=DB_USER,
-  password=DB_PASSWORD,
-  database=DB_NAME
-)
-#ss
+try:
+    mydb = mysql.connector.connect(
+      host=DB_HOST,
+      user=DB_USER,
+      password=DB_PASSWORD,
+      database=DB_NAME
+    )
+except:
+    print("Cannot connect to the database")
 
 class AddSubjectWindow(QtWidgets.QWidget):
     def __init__(self):
@@ -92,6 +93,7 @@ class AddSubjectWindow(QtWidgets.QWidget):
     def run(self):
 
         if self.edit_nickname.text() not in config.seznam_subjektu and self.checkbox_agree.isChecked():
+
             mycursor = mydb.cursor()
             #sql = "INSERT INTO prvni_tabulka (Jmeno,Vek, Prijmeni) VALUES (%s,%s, %s)"
             #val = (self.edit.text(), int(self.weight_comboBox.text()), self.edit2.text())
