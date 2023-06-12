@@ -15,11 +15,20 @@ To run the program, navigate to the project directory in your terminal and run t
 `python main.py`
 This will launch the main window of the application.
 
+Set the second network adapter for the cameras:
+IPv4: 192.168.1.100
+MASK: 255.255.255.0
+Gateway: 192.168.1.1
+Default DNS: 8.8.8.8
+Alternative DNS: 8.8.4.4
+
 ## How to Use the Program
 Exercise Selection
 The main window of the application contains two tabs: "Exercise Selection" and "User Data".
 
 In the "Exercise Selection" tab, you can select an exercise from a dropdown list. Once you select an exercise, the program will display a live feed from each of the four cameras. The video feeds are synchronized using the ffmpeg library, so they will all start and stop at the same time.
+
+
 
 ## User Data
 In the "User Data" tab, you can enter data about the user performing the exercise. You can enter the following information:
