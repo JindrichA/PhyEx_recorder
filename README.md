@@ -32,7 +32,7 @@ In the "Exercise Selection" tab, you can select an exercise from a dropdown list
 
 ## User Data
 In the "User Data" tab, you can enter data about the user performing the exercise. You can enter the following information:
-g
+
 Name
 Age
 Gender
